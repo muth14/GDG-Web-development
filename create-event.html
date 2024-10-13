@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+</head>
+<body>
+    <h1>Create a New Event</h1>
+    <form id="createEventForm">
+        <input type="text" id="eventName" placeholder="Event Name" required><br><br>
+        <input type="datetime-local" id="eventDate" required><br><br>
+        <textarea id="eventDescription" placeholder="Event Description" required></textarea><br><br>
+        <button type="submit">Create Event</button>
+    </form>
+
+    <script>
+        // This function runs when the form is submitted
+        document.getElementById('createEventForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevents the page from reloading
+
+            const eventData = {
+                name: document.getElementById('eventName').value,
+                date: document.getElementById('eventDate').value,
+                description: document.getElementById('eventDescription').value,
+            };
+
+            fetch('http://localhost:5001/api/events', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(eventData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Event created:', data);
+                alert('Event created successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
